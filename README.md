@@ -24,10 +24,6 @@ The app uses **The Movie Database (TMDB) API** to fetch movie details automatica
 
 ---
 
-## 📸 Screenshots (optional)
-_Add screenshots of your app here when running in the browser._
 
----
 
-## ⚙️ Installation & Setup
-1. Clone this repo:
+
