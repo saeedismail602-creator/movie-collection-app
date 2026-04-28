@@ -5,11 +5,20 @@
 {% block content %}
 <div class="container">
     <h1 class="heading">Select Movie</h1>
-    {% for movie in options: %}
-  <p>
-    <a href="{{ url_for('find_movie', id=movie.id) }} ">{{ movie.title }} - {{movie.release_date}}</a>
-  </p>
-  {% endfor %}
-
+    <p class="description">Choose the correct movie from the results below.</p>
+    
+    <ul class="movie-list">
+        {% for movie in options %}
+        <li class="movie-list-item">
+            <a class="movie-link" href="{{ url_for('find_movie', id=movie.id) }}">
+                {{ movie.title }} <span class="release-year">({{ movie.release_date }})</span>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+    
+    <div class="add-container">
+        <a href="{{ url_for('add_movie') }}" class="add-button" style="padding: 0.8rem 1.5rem; font-size: 0.9rem;">Back to Search</a>
+    </div>
 </div>
 {% endblock %}

@@ -3,35 +3,40 @@
 {% block title %}My Top 10 Movies{% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="movie-grid-container">
   <h1 class="heading">My Top 10 Movies</h1>
   <p class="description">These are my all-time favourite movies.</p>
 
-  {% for movie in movies %}
-  <div class="card">
-    <div class="front" style="background-image: url('{{ movie.img_url }}');">
-        <p class="large">{{ movie.ranking }}</p>
-    </div>
-    <div class="back">
-      <div>
-        <div class="title">{{ movie.title }} <span class="release_date">({{ movie.year }})</span></div>
-        <div class="rating">
-          <label>{{ movie.rating }}</label>
-          <i class="fas fa-star star"></i>
-        </div>
-        <p class="review">"{{ movie.review }}"</p>
-        <p class="overview">{{ movie.description }}</p>
+  <div class="movie-grid">
+    {% for movie in movies %}
+    <div class="card">
+      <div class="front" style="background-image: url('{{ movie.img_url }}?v=1');">
+          <p class="large">{{ movie.ranking }}</p>
+      </div>
+      <div class="back">
+        <div class="card-content">
+          <div class="title">{{ movie.title }} <span class="release_date">({{ movie.year }})</span></div>
+          <div class="rating">
+            <i class="fas fa-star star"></i>
+            <span>{{ movie.rating }}</span>
+          </div>
+          {% if movie.review %}
+          <p class="review">"{{ movie.review }}"</p>
+          {% endif %}
+          <p class="overview">{{ movie.description }}</p>
 
-        <a href="{{ url_for('edit', id=movie.id) }}" class="button">Update</a>
-        <a href="{{ url_for('delete', id=movie.id) }}" class="button delete-button">Delete</a>
+          <div class="button-group">
+            <a href="{{ url_for('edit', id=movie.id) }}" class="button">Update</a>
+            <a href="{{ url_for('delete', id=movie.id) }}" class="button delete-button">Delete</a>
+          </div>
+        </div>
       </div>
     </div>
+    {% endfor %}
   </div>
-  {% endfor %}
-</div>
 
-<!-- Add Movie button OUTSIDE the loop -->
-<div class="container text-center add">
-  <a href="{{ url_for('add_movie') }}" class="button">Add Movie</a>
+  <div class="add-container">
+    <a href="{{ url_for('add_movie') }}" class="add-button">Add Movie</a>
+  </div>
 </div>
 {% endblock %}

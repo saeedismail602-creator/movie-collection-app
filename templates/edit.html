@@ -2,8 +2,11 @@
 {% block title %}Edit Movies{% endblock %} {% block content %}
 <div class="content">
   <h1 class="heading">{{movie.title}}</h1>
-    <p class="description">Edit Movie Rating</p>
+    <p class="description">Update your rating and review</p>
         {{ render_form(form, novalidate=True) }}
+    <div class="text-center mt-4">
+        <a href="{{ url_for('home') }}" style="color: var(--text-secondary); text-decoration: none; font-weight: 600;">← Cancel and Back</a>
+    </div>
 </div>
 {% endblock %}
 

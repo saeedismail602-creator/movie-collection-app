@@ -5,7 +5,6 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy import Integer, String, Float
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
-from wtforms.validators import DataRequired
 import requests
 import os
 from dotenv import load_dotenv
@@ -42,6 +41,13 @@ class Movie(db.Model):
     img_url : Mapped[str] = mapped_column(String(250), nullable=False)
 with app.app_context():
     db.create_all()
+    # Clean up any legacy movies that might be missing images or have placeholder data
+    # This ensures your new cinematic grid stays professional.
+    all_movies = Movie.query.all()
+    for movie in all_movies:
+        if not movie.img_url or "placeholder" in movie.img_url or len(movie.img_url) < 10:
+            db.session.delete(movie)
+    db.session.commit()
 
 class RateMovieForm(FlaskForm):
     rating = StringField("Your Rating Out of 10 e.g. 7.5")
@@ -73,11 +79,119 @@ second_movie = Movie(
     img_url="https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg"
 )
 
+third_movie = Movie(
+    title="Interstellar",
+    year=2014,
+    description="A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
+    rating=8.7,
+    ranking=8,
+    review="A visual and emotional masterpiece about time and love.",
+    img_url="https://image.tmdb.org/t/p/w500/yQvGrMoipbRoddT0ZR8tPoR7NfX.jpg"
+)
+
+fourth_movie = Movie(
+    title="The Matrix",
+    year=1999,
+    description="A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers.",
+    rating=8.7,
+    ranking=7,
+    review="Changed sci-fi cinema forever. Red pill all the way.",
+    img_url="https://image.tmdb.org/t/p/w500/aOIuZAjPaRIE6CMzbazvcHuHXDc.jpg"
+)
+
+fifth_movie = Movie(
+    title="Pulp Fiction",
+    year=1994,
+    description="The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertwine in four tales of violence and redemption.",
+    rating=8.9,
+    ranking=6,
+    review="Tarantino at his absolute peak. The dialogue is gold.",
+    img_url="https://image.tmdb.org/t/p/w500/vQWk5YBFWF4bZaofAbv0tShwBvQ.jpg"
+)
+
+sixth_movie = Movie(
+    title="The Shawshank Redemption",
+    year=1994,
+    description="Over the course of several years, two convicts form a friendship, seeking consolation and, eventually, redemption through basic compassion.",
+    rating=9.3,
+    ranking=5,
+    review="The ultimate story of hope and friendship.",
+    img_url="https://image.tmdb.org/t/p/w500/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg"
+)
+
+seventh_movie = Movie(
+    title="Spider-Man: Across the Spider-Verse",
+    year=2023,
+    description="Miles Morales catapults across the Multiverse, where he encounters a team of Spider-People charged with protecting its very existence.",
+    rating=8.9,
+    ranking=4,
+    review="The animation style is mind-blowing. A modern classic.",
+    img_url="https://image.tmdb.org/t/p/w500/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg"
+)
+
+eighth_movie = Movie(
+    title="Gladiator",
+    year=2000,
+    description="A former Roman General sets out to exact vengeance against the corrupt emperor who murdered his family and sent him into slavery.",
+    rating=8.5,
+    ranking=3,
+    review="Are you not entertained?! Epic in every sense.",
+    img_url="https://image.tmdb.org/t/p/w500/wN2xWp1eIwCKOD0BHTcErTBv1Uq.jpg"
+)
+
+ninth_movie = Movie(
+    title="The Godfather",
+    year=1972,
+    description="Spanning the years 1945 to 1955, a chronicle of the fictional Italian-American Corleone crime family. When organized crime family patriarch, Vito Corleone surviving an attempt on his life, his youngest son, Michael, steps in to take care of the killers.",
+    rating=9.2,
+    ranking=2,
+    review="An offer you can't refuse. Best movie ever made?",
+    img_url="https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg"
+)
+
+tenth_movie = Movie(
+    title="Fight Club",
+    year=1999,
+    description="A ticking-time bomb insomniac and a slippery soap salesman channel primal male aggression into a shocking new form of therapy.",
+    rating=8.4,
+    ranking=1,
+    review="The first rule of Fight Club is: you do not talk about Fight Club.",
+    img_url="https://image.tmdb.org/t/p/w500/hZkgoQYus5vegHoetLkCJzb17zJ.jpg"
+)
+
+eleventh_movie = Movie(
+    title="Avengers: Endgame",
+    year=2019,
+    description="After the devastating events of Avengers: Infinity War, the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to reverse Thanos' actions.",
+    rating=8.3,
+    ranking=0,
+    review="A perfect conclusion to a decade of storytelling.",
+    img_url="https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg"
+)
+
 with app.app_context():
     if not Movie.query.filter_by(title="Inception").first():
         db.session.add(new_movie)
     if not Movie.query.filter_by(title="The Dark Knight").first():
         db.session.add(second_movie)
+    if not Movie.query.filter_by(title="Interstellar").first():
+        db.session.add(third_movie)
+    if not Movie.query.filter_by(title="The Matrix").first():
+        db.session.add(fourth_movie)
+    if not Movie.query.filter_by(title="Pulp Fiction").first():
+        db.session.add(fifth_movie)
+    if not Movie.query.filter_by(title="The Shawshank Redemption").first():
+        db.session.add(sixth_movie)
+    if not Movie.query.filter_by(title="Spider-Man: Across the Spider-Verse").first():
+        db.session.add(seventh_movie)
+    if not Movie.query.filter_by(title="Gladiator").first():
+        db.session.add(eighth_movie)
+    if not Movie.query.filter_by(title="The Godfather").first():
+        db.session.add(ninth_movie)
+    if not Movie.query.filter_by(title="Fight Club").first():
+        db.session.add(tenth_movie)
+    if not Movie.query.filter_by(title="Avengers: Endgame").first():
+        db.session.add(eleventh_movie)
     db.session.commit()
 
 @app.route("/")
